@@ -200,16 +200,18 @@ export default function RetranscribeModal({ video, onClose, onSuccess }: Retrans
                                 )}
 
                                 {/* Prompt */}
-                                <div className="space-y-1">
-                                    <label className="text-xs text-[var(--color-text-muted)]">{t('retranscribeModal.promptLabel')}</label>
-                                    <textarea
-                                        value={prompt}
-                                        onChange={(e) => setPrompt(e.target.value)}
-                                        placeholder={t('retranscribeModal.promptPlaceholder')}
-                                        rows={2}
-                                        className="w-full px-3 py-2 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg text-sm resize-none focus:ring-1 focus:ring-[var(--color-primary)] focus:outline-none"
-                                    />
-                                </div>
+                                {subtitleMode !== 'only_sub' && (
+                                    <div className="space-y-1">
+                                        <label className="text-xs text-[var(--color-text-muted)]">{t('retranscribeModal.promptLabel')}</label>
+                                        <textarea
+                                            value={prompt}
+                                            onChange={(e) => setPrompt(e.target.value)}
+                                            placeholder={t('retranscribeModal.promptPlaceholder')}
+                                            rows={2}
+                                            className="w-full px-3 py-2 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg text-sm resize-none focus:ring-1 focus:ring-[var(--color-primary)] focus:outline-none"
+                                        />
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>
