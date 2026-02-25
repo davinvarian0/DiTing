@@ -13,12 +13,14 @@ export default function SystemTab({ onClose }: { onClose: () => void }) {
 
     const [proxyUrl, setProxyUrl] = useState('')
     const [biliSessdata, setBiliSessdata] = useState('')
+    const [ytCookies, setYtCookies] = useState('')
     const [showUvr5, setShowUvr5] = useState(() => localStorage.getItem('diting_show_uvr5') === 'true')
 
     // Fetch initial data
     useEffect(() => {
         getSystemConfig('proxy_url').then(val => setProxyUrl(val || ''))
         getSystemConfig('bilibili_sessdata').then(val => setBiliSessdata(val || ''))
+        getSystemConfig('youtube_cookies').then(val => setYtCookies(val || ''))
     }, [])
 
     const saveProxyMutation = useMutation({
@@ -31,6 +33,12 @@ export default function SystemTab({ onClose }: { onClose: () => void }) {
         mutationFn: (val: string) => setSystemConfig('bilibili_sessdata', val),
         onSuccess: () => showToast('success', t('settings.system.biliCookieSaved')),
         onError: () => showToast('error', t('settings.system.biliCookieSaveFailed')),
+    })
+
+    const saveYtCookieMutation = useMutation({
+        mutationFn: (val: string) => setSystemConfig('youtube_cookies', val),
+        onSuccess: () => showToast('success', t('settings.system.ytCookieSaved')),
+        onError: () => showToast('error', t('settings.system.ytCookieSaveFailed')),
     })
 
     return (
@@ -86,6 +94,36 @@ export default function SystemTab({ onClose }: { onClose: () => void }) {
                 </div>
                 <p className="text-xs text-[var(--color-text-muted)]">
                     {t('settings.system.biliCookieHint')}
+                </p>
+            </div>
+
+            <hr className="border-[var(--color-border)]" />
+
+            {/* YouTube Cookie */}
+            <div className="space-y-4">
+                <h3 className="font-medium flex items-center gap-2">
+                    <Icons.Lock className="w-5 h-5" />
+                    {t('settings.system.ytCookieTitle')}
+                </h3>
+                <div className="space-y-2">
+                    <textarea
+                        rows={4}
+                        placeholder={t('settings.system.ytCookiePlaceholder')}
+                        value={ytCookies}
+                        onChange={(e) => setYtCookies(e.target.value)}
+                        className="w-full px-3 py-2 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg text-sm font-mono resize-y"
+                    />
+                    <div className="flex justify-end">
+                        <button
+                            onClick={() => saveYtCookieMutation.mutate(ytCookies)}
+                            className="px-4 py-2 bg-[var(--color-primary)] text-white text-sm rounded-lg hover:opacity-90"
+                        >
+                            {t('common.save')}
+                        </button>
+                    </div>
+                </div>
+                <p className="text-xs text-[var(--color-text-muted)]">
+                    {t('settings.system.ytCookieHint')}
                 </p>
             </div>
 

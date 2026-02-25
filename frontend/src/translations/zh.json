@@ -271,6 +271,11 @@
             "biliCookieHint": "用于获取B站AI生成字幕以及会员/高清画质（1080P+）。从浏览器 Cookie 中复制 SESSDATA 值。留空则仅获取UP主上传的CC字幕。",
             "biliCookieSaved": "B站 Cookie 已保存",
             "biliCookieSaveFailed": "保存失败",
+            "ytCookieTitle": "YouTube Cookie",
+            "ytCookiePlaceholder": "粘贴 Netscape 格式的 cookies.txt 内容...",
+            "ytCookieHint": "用于访问年龄限制、地区限制或会员视频。使用浏览器插件（如 Get cookies.txt LOCALLY）导出 youtube.com 的 Cookie，粘贴完整内容到此处。留空则不使用 Cookie。",
+            "ytCookieSaved": "YouTube Cookie 已保存",
+            "ytCookieSaveFailed": "保存失败",
             "featureToggleTitle": "功能开关",
             "showUvr5": "显示 UVR5 人声分离选项",
             "showUvr5Hint": "UVR5消耗较多资源，启用后会在添加视频、重新转写等界面中显示该选项"

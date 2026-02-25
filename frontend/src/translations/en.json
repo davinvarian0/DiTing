@@ -271,6 +271,11 @@
             "biliCookieHint": "Required for fetching Bilibili AI-generated subtitles and accessing HD/Member quality (1080P+). Copy SESSDATA from browser cookies.",
             "biliCookieSaved": "Bilibili cookie saved",
             "biliCookieSaveFailed": "Failed to save",
+            "ytCookieTitle": "YouTube Cookie",
+            "ytCookiePlaceholder": "Paste Netscape-format cookies.txt content...",
+            "ytCookieHint": "Required for accessing age-restricted, region-locked, or member-only videos. Export YouTube cookies using a browser extension (e.g. Get cookies.txt LOCALLY) and paste the full content here. Leave blank to skip.",
+            "ytCookieSaved": "YouTube cookie saved",
+            "ytCookieSaveFailed": "Failed to save",
             "featureToggleTitle": "Feature Toggles",
             "showUvr5": "Show UVR5 Vocal Separation Option",
             "showUvr5Hint": "UVR5 is resource-intensive. When enabled, this option will be visible in Add Video, Retranscribe, and Upload Modal dialogs."
