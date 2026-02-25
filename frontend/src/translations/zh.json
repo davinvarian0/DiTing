@@ -727,7 +727,9 @@
         },
         "layout": {
             "split": "分屏模式",
-            "scroll": "滚动模式"
+            "scroll": "滚动模式",
+            "expandLeft": "展开播放器面板",
+            "expandRight": "展开转写面板"
         },
         "confirm": {
             "deleteCacheTitle": "删除缓存文件",

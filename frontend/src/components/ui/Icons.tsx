@@ -135,6 +135,15 @@ export function ChevronUp({ className = 'w-4 h-4', strokeWidth = 2 }: IconProps)
     )
 }
 
+// Chevron Left
+export function ChevronLeft({ className = 'w-4 h-4', strokeWidth = 2 }: IconProps) {
+    return (
+        <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={strokeWidth} d="M15 19l-7-7 7-7" />
+        </svg>
+    )
+}
+
 // Chevron Right
 export function ChevronRight({ className = 'w-4 h-4', strokeWidth = 2 }: IconProps) {
     return (
@@ -559,6 +568,7 @@ const Icons = {
     Play,
     ChevronDown,
     ChevronUp,
+    ChevronLeft,
     ChevronRight,
     ArrowLeft,
     Sparkles,

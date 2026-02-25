@@ -718,7 +718,9 @@
         },
         "layout": {
             "split": "Split Screen",
-            "scroll": "Scroll Mode"
+            "scroll": "Scroll Mode",
+            "expandLeft": "Expand player panel",
+            "expandRight": "Expand transcription panel"
         },
         "confirm": {
             "deleteCacheTitle": "Delete Cache File",
