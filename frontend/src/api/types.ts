@@ -144,6 +144,7 @@ export interface ASRStatus {
         online: boolean
         latency: number
         url?: string
+        badge?: string
     }>
     config: {
         priority: string[]

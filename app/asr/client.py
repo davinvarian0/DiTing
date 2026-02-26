@@ -198,10 +198,20 @@ class ASRClient:
             }
         # Cloud (only configured ones)
         for ce in self._configured_clouds:
+            # Read badge from active model config
+            badge = ""
+            try:
+                db_cfg = get_active_model_for_engine(ce)
+                if db_cfg:
+                    cfg = json.loads(db_cfg.get("config", "{}"))
+                    badge = cfg.get("badge", "") or db_cfg.get("name", "")
+            except Exception:
+                pass
             status[ce] = {
                 "type": "cloud",
                 "online": True,
-                "latency": 0
+                "latency": 0,
+                "badge": badge,
             }
         return {
             "engines": status,

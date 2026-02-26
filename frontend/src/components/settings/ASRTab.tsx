@@ -35,7 +35,7 @@ export default function ASRTab() {
 
     const [showModelForm, setShowModelForm] = useState(false)
     const [editingModel, setEditingModel] = useState<ASRModel | null>(null)
-    const [modelForm, setModelForm] = useState({ name: '', engine: 'bailian', config: '' })
+    const [modelForm, setModelForm] = useState({ name: '', engine: 'bailian', config: '', badge: '' })
 
     // Structured form fields for cloud model config
     const [cloudForm, setCloudForm] = useState({ api_key: '', model_name: 'paraformer-realtime-v2' })
@@ -109,7 +109,12 @@ export default function ASRTab() {
 
     const handleEditModel = (model: ASRModel) => {
         setEditingModel(model)
-        setModelForm({ name: model.name, engine: model.engine, config: model.config })
+        let badge = ''
+        try {
+            const cfg = JSON.parse(model.config)
+            badge = cfg.badge || ''
+        } catch { /* ignore */ }
+        setModelForm({ name: model.name, engine: model.engine, config: model.config, badge })
         // Parse existing config into structured form
         try {
             const cfg = JSON.parse(model.config)
@@ -127,6 +132,7 @@ export default function ASRTab() {
 
     const handleSaveModel = () => {
         const isOpenAI = modelForm.engine === 'openai_asr'
+        const badge = modelForm.badge.trim()
 
         let configJson: string
         if (isOpenAI) {
@@ -141,6 +147,7 @@ export default function ASRTab() {
                 api_key: apiKey,
                 base_url: openaiForm.base_url || 'https://api.openai.com/v1',
                 model_name: openaiForm.model_name,
+                ...(badge && { badge }),
             })
         } else {
             let apiKey = cloudForm.api_key
@@ -153,6 +160,7 @@ export default function ASRTab() {
             configJson = JSON.stringify({
                 api_key: apiKey,
                 model_name: cloudForm.model_name,
+                ...(badge && { badge }),
             })
         }
 
@@ -323,8 +331,8 @@ export default function ASRTab() {
                             {/* Info */}
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2">
-                                    <span className={`font-medium capitalize ${isActive && strictMode ? 'text-[var(--color-primary)]' : ''}`}>
-                                        {engineName}
+                                    <span className={`font-medium ${isActive && strictMode ? 'text-[var(--color-primary)]' : ''}`}>
+                                        {isCloud ? (info.badge || engineName) : engineName}
                                     </span>
 
                                     {/* Badges */}
@@ -341,7 +349,7 @@ export default function ASRTab() {
                                         )}
                                         <span className={`px-2 py-0.5 rounded text-[10px] ${isCloud ? 'bg-blue-500/10 text-blue-500' : 'bg-purple-500/10 text-purple-500'
                                             }`}>
-                                            {isCloud ? 'Cloud' : 'Local'}
+                                            {isCloud ? (info.badge || 'Cloud') : 'Local'}
                                         </span>
                                     </div>
                                 </div>
@@ -396,7 +404,7 @@ export default function ASRTab() {
                     <button
                         onClick={() => {
                             setEditingModel(null)
-                            setModelForm({ name: '', engine: 'bailian', config: '' })
+                            setModelForm({ name: '', engine: 'bailian', config: '', badge: '' })
                             setCloudForm({ api_key: '', model_name: 'paraformer-realtime-v2' })
                             setOpenaiForm({ api_key: '', base_url: 'https://api.openai.com/v1', model_name: 'whisper-1' })
                             setShowModelForm(true)
@@ -497,6 +505,20 @@ export default function ASRTab() {
                                     <option value="bailian">Aliyun Bailian / DashScope</option>
                                     <option value="openai_asr">OpenAI Compatible</option>
                                 </select>
+                            </div>
+                            <div>
+                                <label className="text-sm font-medium block mb-1">{t('settings.asr.badge')}</label>
+                                <input
+                                    type="text"
+                                    value={modelForm.badge}
+                                    onChange={e => setModelForm({ ...modelForm, badge: e.target.value })}
+                                    placeholder={t('settings.asr.badgePlaceholder')}
+                                    className="w-full px-3 py-2 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-md text-sm"
+                                    maxLength={20}
+                                />
+                                <div className="text-xs text-[var(--color-text-muted)] mt-1">
+                                    {t('settings.asr.badgeHint')}
+                                </div>
                             </div>
                             {/* OpenAI-Compatible fields */}
                             {modelForm.engine === 'openai_asr' && (
