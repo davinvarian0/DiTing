@@ -486,7 +486,8 @@
             "overview": "概览",
             "entries": "缓存文件",
             "batch": "批量缓存",
-            "cleanup": "清理中心"
+            "cleanup": "清理中心",
+            "logs": "日志"
         },
         "overview": {
             "totalSize": "总缓存大小",
@@ -626,6 +627,24 @@
             "confirmMessage": "确定要删除选中的 {{count}} 张封面图片吗？",
             "cleanDone": "清理完成: 删除 {{count}} 个文件, 释放 {{mb}} MB",
             "cleanFailed": "清理失败"
+        },
+        "logs": {
+            "fileInfo": "信息日志",
+            "fileError": "错误日志",
+            "fileAccess": "访问日志",
+            "allLevels": "所有级别",
+            "lines": "行",
+            "entries": "条记录",
+            "empty": "暂无日志记录",
+            "live": "实时",
+            "paused": "已暂停",
+            "pauseRefresh": "暂停自动刷新",
+            "resumeRefresh": "恢复自动刷新",
+            "clearHighlight": "清除高亮",
+            "refreshingEvery": "每 {{seconds}} 秒自动刷新",
+            "refreshPaused": "自动刷新已暂停",
+            "autoScrollOn": "自动滚动: 开",
+            "autoScrollOff": "自动滚动: 关 (手动滚动中)"
         }
     },
     "detailPanel": {

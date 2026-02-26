@@ -218,3 +218,15 @@ export interface IntegrityReport {
     db_orphans: DBOrphan[]
     fs_orphans: FSOrphan[]
 }
+
+// Log Entry
+export interface LogEntry {
+    timestamp: string
+    level: string
+    name: string
+    message: string
+    trace_id: string | null
+    module: string
+    line: number
+    exception?: string
+}

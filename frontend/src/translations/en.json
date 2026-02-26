@@ -487,7 +487,8 @@
             "overview": "Overview",
             "entries": "Cache Files",
             "batch": "Batch Cache",
-            "cleanup": "Cleanup"
+            "cleanup": "Cleanup",
+            "logs": "Logs"
         },
         "overview": {
             "totalSize": "Total Cache Size",
@@ -617,6 +618,24 @@
             "confirmMessage": "Are you sure you want to delete the selected {{count}} cover images?",
             "cleanDone": "Cleanup complete: deleted {{count}} files, freed {{mb}} MB",
             "cleanFailed": "Cleanup failed"
+        },
+        "logs": {
+            "fileInfo": "Info Log",
+            "fileError": "Error Log",
+            "fileAccess": "Access Log",
+            "allLevels": "All Levels",
+            "lines": "lines",
+            "entries": "entries",
+            "empty": "No log entries found",
+            "live": "Live",
+            "paused": "Paused",
+            "pauseRefresh": "Pause auto-refresh",
+            "resumeRefresh": "Resume auto-refresh",
+            "clearHighlight": "Clear highlight",
+            "refreshingEvery": "Auto-refreshing every {{seconds}}s",
+            "refreshPaused": "Auto-refresh paused",
+            "autoScrollOn": "Auto-scroll: ON",
+            "autoScrollOff": "Auto-scroll: OFF (scrolled up)"
         }
     },
     "detailPanel": {

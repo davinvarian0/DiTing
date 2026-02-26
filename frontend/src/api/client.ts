@@ -2,7 +2,7 @@
  * API Client for DiTing Backend
  * Uses RESTful endpoints
  */
-import type { PaginatedVideos, Segment, Video, Task, LLMProvider, ASRModel, Prompt, PromptCategory, ASRStatus, GCCandidate, CoverGCCandidate, CacheEntry, CacheStats, IntegrityReport, Tag } from './types'
+import type { PaginatedVideos, Segment, Video, Task, LLMProvider, ASRModel, Prompt, PromptCategory, ASRStatus, GCCandidate, CoverGCCandidate, CacheEntry, CacheStats, IntegrityReport, Tag, LogEntry } from './types'
 
 // ... (skipping to the end of file)
 
@@ -537,6 +537,19 @@ export async function getSystemVersion(): Promise<{ version: string; build: stri
 
 export async function checkSystemUpdate(): Promise<{ update_available: boolean; current_version: string; latest_version: string; release_notes: string; download_url: string }> {
     return fetchJson(`${API_BASE}/system/check-update`)
+}
+
+// System Logs
+export async function getSystemLogs(params: {
+    file?: 'info' | 'error' | 'access',
+    lines?: number,
+    level?: string
+} = {}): Promise<{ entries: LogEntry[], file: string, total: number }> {
+    const searchParams = new URLSearchParams()
+    if (params.file) searchParams.set('file', params.file)
+    if (params.lines) searchParams.set('lines', String(params.lines))
+    if (params.level) searchParams.set('level', params.level)
+    return fetchJson(`${API_BASE}/system/logs?${searchParams}`)
 }
 
 // ============ Search API ============

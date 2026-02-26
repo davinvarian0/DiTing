@@ -5,8 +5,9 @@ import OverviewTab from './management/OverviewTab'
 import CacheEntriesTab from './management/CacheEntriesTab'
 import BatchCacheTab from './management/BatchCacheTab'
 import CleanupTab from './management/CleanupTab'
+import LogsTab from './management/LogsTab'
 
-type Tab = 'overview' | 'entries' | 'cleanup' | 'batch'
+type Tab = 'overview' | 'entries' | 'cleanup' | 'batch' | 'logs'
 
 export default function Management() {
     const { t } = useTranslation()
@@ -17,6 +18,7 @@ export default function Management() {
         { id: 'entries', label: t('management.tabs.entries'), icon: Icons.FileVideo },
         { id: 'batch', label: t('management.tabs.batch'), icon: Icons.Database },
         { id: 'cleanup', label: t('management.tabs.cleanup'), icon: Icons.Trash },
+        { id: 'logs', label: t('management.tabs.logs'), icon: Icons.FileText },
     ]
 
     return (
@@ -63,6 +65,7 @@ export default function Management() {
                     {activeTab === 'entries' && <CacheEntriesTab />}
                     {activeTab === 'batch' && <BatchCacheTab />}
                     {activeTab === 'cleanup' && <CleanupTab />}
+                    {activeTab === 'logs' && <LogsTab />}
                 </div>
             </div>
         </div >

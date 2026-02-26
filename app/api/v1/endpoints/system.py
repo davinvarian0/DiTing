@@ -14,6 +14,9 @@ router = APIRouter(prefix="/system", tags=["System"])
 from app.api.v1.endpoints.system_cache import router as cache_router
 router.include_router(cache_router)
 
+from app.api.v1.endpoints.logs import router as logs_router
+router.include_router(logs_router)
+
 
 class LauncherConfig(BaseModel):
     asr_engine: str = "sensevoice"
