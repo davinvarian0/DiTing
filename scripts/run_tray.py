@@ -175,12 +175,18 @@ def run_server():
     formatter = logging.Formatter("%(levelname)s: %(message)s")
     handler.setFormatter(formatter)
     
-    # Attach to Uvicorn loggers
-    for logger_name in ["uvicorn", "uvicorn.error", "uvicorn.access", "diting"]:
+    # Attach to Uvicorn loggers (replace their handlers with GUI handler)
+    for logger_name in ["uvicorn", "uvicorn.error", "uvicorn.access"]:
         l = logging.getLogger(logger_name)
         l.handlers = [handler]
         l.setLevel(logging.INFO)
         l.propagate = False
+
+    # For app logger: ADD GUI handler without removing existing file handlers
+    diting_logger = logging.getLogger("diting")
+    diting_logger.addHandler(handler)
+    diting_logger.setLevel(logging.INFO)
+    diting_logger.propagate = False
 
     try:
         # Import here to ensure logging setup applies
